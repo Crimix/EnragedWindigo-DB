@@ -8,7 +8,9 @@ class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
+     *Note: We make authorization elsewhere, so if the user can make
+     * this request in the first place, they are authorized.
+     * 
      * @return bool
      */
     public function authorize()
@@ -24,7 +26,7 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:30',
+            'username' => 'required|max:30',
             'email' => 'required|email|max:255|unique:username',
             'password' => 'required|min:6',
         ];
