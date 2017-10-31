@@ -1,9 +1,9 @@
 <?php
 
-use App\ServiceUser;
+use App\User;
 use Illuminate\Database\Seeder;
 
-class ServiceUserSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,9 +12,9 @@ class ServiceUserSeeder extends Seeder
      */
     public function run()
     {
-       DB::table('service_users')->delete();
-        $workerUser = ServiceUser::create([
-            'service_name' => 'Worker',
+       DB::table('users')->delete();
+        $workerUser = User::create([
+            'name' => 'Worker',
             'password' => bcrypt('ERExjM0rVvcC7zfJvSbU'),
         ]);
         $workerUser->save();
