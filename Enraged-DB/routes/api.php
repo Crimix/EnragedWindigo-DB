@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Http\Request;
 
 /*
@@ -17,4 +18,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api')->get('/twitter', function (Request $request) {
+    return $request->user();
+});
+
+
 Route::post('/register', 'RegisterController@register');
+Route::get('/user/{id}', 'TwitterController@getProfile');
