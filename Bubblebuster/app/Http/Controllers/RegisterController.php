@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Requests\StoreServiceUserRequest;
+use App\Http\Requests\StoreUserRequest;
 
-use App\ServiceUser;
+use App\User;
 
 class RegisterController extends Controller
 {
-    public function register(StoreServiceUserRequest $request)
+    public function register(StoreUserRequest $request)
 	{
-		$serviceUser = new ServiceUser;
+		$user = new User;
 
-		$serviceUser->service_name = $request->service_name;
+		$user->name = $request->name;
 
-		$serviceUser->password = bcrypt($request->password);
+		$user->password = bcrypt($request->password);
 
-		$serviceUser->save();
+		$user->save();
 	}
 }
