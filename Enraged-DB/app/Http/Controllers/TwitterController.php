@@ -8,10 +8,6 @@ use App\Http\Requests\StoreTwitterRequest;
 
 class TwitterController extends Controller
 {
-    public function getProfile($id){
-
-        return User::find($id);
-    }
 	
 	public function getTwitterProfile($twitterID){
 
