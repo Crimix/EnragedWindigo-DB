@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/twitter', function (Request $request) {
 });
 
 
-Route::post('/register', 'RegisterController@register');
-Route::get('/user/{id}', 'UserConstroller@getProfile');
+Route::post('/user/post', 'UserConstroller@register');
+Route::get('/user/get/{id}', 'UserConstroller@getProfile');
 Route::get('/twitter/get/{twitterId}', 'TwitterController@getTwitterProfile');
 Route::post('/twitter/post', 'TwitterController@postTwitterProfile');
