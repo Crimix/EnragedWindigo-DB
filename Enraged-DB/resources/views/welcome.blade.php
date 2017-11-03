@@ -61,6 +61,19 @@
 				padding: 25px;
 				margin: 25px;
             }
+			
+			.sbox {
+				background-color: #ffffff;
+				text-align: center;
+                width: 800px;
+				padding: 25px;
+				margin: 25px;
+            }
+			
+			.stext{
+				font-size: 30px;
+				color: #011119;
+			}
 
             .links > a {
                 color: #636b6f;
@@ -87,6 +100,24 @@
 				<div class="flex-center">
 					<div class="box center text">
 						This page serves to inform about the API
+						<div class="sbox left stext">
+							<p>GET api/user/get/{id}</p>
+							Used to retrive information of a user
+						</div>
+						<div class="sbox right stext">
+							<p>POST api/user/post</p>
+							body args: name, password
+							Used to register a new user
+						</div>
+						<div class="sbox right stext">
+							<p>GET api/api/twitter/get/{id}</p>
+							Used to retrive the specified twitter user result
+						</div>
+						<div class="sbox right stext">
+							<p>POST api/twitter/post</p>
+							body args: name, twitterID, pol_var, lib_var, protect
+							Used to save a twitter user resut a new user
+						</div>
 					</div>
 				</div>
 			</div>

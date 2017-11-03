@@ -19,6 +19,7 @@ class CreateTwittersTable extends Migration
             $table->string('twitterID');
             $table->string('pol_var');
             $table->string('lib_var');
+			$table->boolean('protect');
             $table->timestamps();
         });
     }

@@ -28,6 +28,7 @@ class StoreTwitterRequest extends FormRequest
 			'twitterID' => 'required|max:30',
 			'pol_var' => 'required',
 			'lib_var' => 'required',
+			'protect' => 'required',
         ];
     }
 }

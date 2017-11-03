@@ -12,7 +12,7 @@ class Twitter extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'twitterID', 'pol_var', 'lib_var',
+        'name', 'twitterID', 'pol_var', 'lib_var', 'protect',
     ];
 
     /**
