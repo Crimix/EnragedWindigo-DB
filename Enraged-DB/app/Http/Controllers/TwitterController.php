@@ -8,27 +8,27 @@ use App\Http\Requests\StoreTwitterRequest;
 
 class TwitterController extends Controller
 {
-	
-	public function getTwitterProfile($twitterID){
+    
+    public function getTwitterProfile($twitterID){
 
-		return Twitter::where('twitterID','=',$twitterID)->latest()->first();
+        return Twitter::where('twitterID','=',$twitterID)->latest()->first();
     }
-	
-	public function postTwitterProfile(StoreTwitterRequest $request) 
+    
+    public function postTwitterProfile(StoreTwitterRequest $request) 
     {
-		try{
-			$twitter = new Twitter;
+        try{
+            $twitter = new Twitter;
 
-			$twitter->name = $request->name;
-			$twitter->twitterID = $request->twitterID;
-			$twitter->pol_var = $request->pol_var;
-			$twitter->lib_var = $request->lib_var;
-			$twitter->protect =  $request->protect;
+            $twitter->name = $request->name;
+            $twitter->twitterID = $request->twitterID;
+            $twitter->pol_var = $request->pol_var;
+            $twitter->lib_var = $request->lib_var;
+            $twitter->protect =  $request->protect;
 
-			$twitter->save();
-		}
-		catch(\Exception $e){
-			return response()->json('Internal Server Error', 500);
-		}
+            $twitter->save();
+        }
+        catch(\Exception $e){
+            return response()->json('Internal Server Error', 500);
+        }
     }
 }

@@ -12,7 +12,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-       DB::table('users')->delete();
+        DB::table('users')->delete();
         $workerUser = User::create([
             'name' => 'Worker',
             'password' => bcrypt('ERExjM0rVvcC7zfJvSbU'),
