@@ -18,6 +18,8 @@ class TwitterSeeder extends Seeder
             'twitterID' => 'test2',
             'pol_var' => 2,
             'lib_var' => 1,
+            'fpol_var' => 2,
+            'flib_var' => 1,
             'protect' => false
         ]);
         $twitterItem->save();

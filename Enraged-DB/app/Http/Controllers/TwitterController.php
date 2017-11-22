@@ -23,6 +23,8 @@ class TwitterController extends Controller
             $twitter->twitterID = $request->twitterID;
             $twitter->pol_var = $request->pol_var;
             $twitter->lib_var = $request->lib_var;
+            $twitter->fpol_var = $request->fpol_var;
+            $twitter->flib_var = $request->flib_var;
             $twitter->protect =  $request->protect;
 
             $twitter->save();
