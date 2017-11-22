@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 */
 
 
-Route::post('/user/post', 'UserController@register')->middleware('auth:api');
-Route::get('/user/get/{id}', 'UserController@getProfile')->middleware('auth:api');
-Route::get('/twitter/get/{twitterId}', 'TwitterController@getTwitterProfile')->middleware('auth:api');
-Route::post('/twitter/post', 'TwitterController@postTwitterProfile')->middleware('auth:api');
+Route::post('/user', 'UserController@register')->middleware('auth:api');
+Route::get('/user/{id}', 'UserController@getProfile')->middleware('auth:api');
+Route::post('/twitter', 'TwitterController@postTwitterProfile')->middleware('auth:api');
+Route::get('/twitter/{twitterId}', 'TwitterController@getTwitterProfile')->middleware('auth:api');

@@ -15,10 +15,10 @@ class TwitterSeeder extends Seeder
        DB::table('twitters')->delete();
         $twitterItem = Twitter::create([
             'name' => 'test',
-			'twitterID' => 'test2',
-			'pol_var' => 2,
-			'lib_var' => 1,
-			'protect' => false
+            'twitterID' => 'test2',
+            'pol_var' => 2,
+            'lib_var' => 1,
+            'protect' => false
         ]);
         $twitterItem->save();
     }

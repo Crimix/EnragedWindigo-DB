@@ -8,22 +8,22 @@ use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
-	
-	public function register(StoreUserRequest $request) 
+    
+    public function register(StoreUserRequest $request) 
     {
-		try{
-			$user = new User;
+        try{
+            $user = User::create([
+                'name' => $request->name,
+                'password' => bcrypt($request->password),
+            ]);
 
-			$user->name = $request->name;
-			$user->password = $request->password; //Storing in plain text is bad, but for now it will do
-
-			$user->save();
-		}
-		catch(\Exception $e){
-			return response()->json('Internal Server Error', 500);
-		}
+            $user->save();
+        }
+        catch(\Exception $e){
+            return response()->json('Internal Server Error', 500);
+        }
     }
-	
+    
     public function getProfile($id){
 
         return User::find($id);
