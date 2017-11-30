@@ -12,7 +12,7 @@ class Twitter extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'twitterID', 'pol_var', 'lib_var', 'protect', 'fpol_var', 'flib_var',
+        'name', 'twitterID', 'pol_var', 'protect',
     ];
 
     /**
@@ -22,4 +22,13 @@ class Twitter extends Model
      */
     protected $hidden = [
     ];
+
+    /**
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongToMany
+     */
+    public function follows()
+    {
+        return $this->belongsToMany('App\Twitter', 'twitter_twitter', 'twitter_id', 'follows_id', 'id', 'id');
+    }
 }

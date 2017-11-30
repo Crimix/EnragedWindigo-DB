@@ -6,6 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTwitterRequest extends FormRequest
 {
+    protected $rules = [
+        'name' =>  'required|string|max:50',
+        'twitterID' => 'required|alpha_dash|max:30',
+        'pol_var' => 'required|numeric',
+        'protect' => 'required|boolean',
+    ];
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,14 +30,6 @@ class StoreTwitterRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' =>  'required|max:30',
-			'twitterID' => 'required|max:30',
-			'pol_var' => 'required',
-            'lib_var' => 'required',
-            'fpol_var' => 'required',
-            'flib_var' => 'required',
-			'protect' => 'required',
-        ];
+        return $this->rules;
     }
 }

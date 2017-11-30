@@ -8,13 +8,47 @@ use App\Http\Requests\StoreTwitterRequest;
 
 class TwitterController extends Controller
 {
-    
-    public function getTwitterProfile($twitterID){
+    /**
+     *
+     */
+    public function getTwitterProfile(Twitter $twitter)
+    {
+        if (empty($twitter)) {
+            return response()->json(['errors' => ['Profile not found!']], 404);
+        }
 
-        return Twitter::where('twitterID','=',$twitterID)->latest()->first();
+        $twitter->load('follows');
+
+        $data = [
+            'user' => $twitter->pol_var,
+            'follows' => []
+        ];
+
+        foreach ($twitter->follows as $following) {
+            //
+        }
     }
-    
-    public function postTwitterProfile(StoreTwitterRequest $request) 
+
+    /**
+     *
+     */
+    public function addTwitterFollower()
+    {
+        //
+    }
+
+    /**
+     *
+     */
+    public function hasTwitterProfile($twitterID)
+    {
+
+    }
+
+    /**
+     *
+     */
+    public function postTwitterProfile(StoreTwitterRequest $request)
     {
         try{
             $twitter = new Twitter;
@@ -22,15 +56,12 @@ class TwitterController extends Controller
             $twitter->name = $request->name;
             $twitter->twitterID = $request->twitterID;
             $twitter->pol_var = $request->pol_var;
-            $twitter->lib_var = $request->lib_var;
-            $twitter->fpol_var = $request->fpol_var;
-            $twitter->flib_var = $request->flib_var;
             $twitter->protect =  $request->protect;
 
             $twitter->save();
         }
         catch(\Exception $e){
-            return response()->json('Internal Server Error', 500);
+            return response()->json(['errors' => ['Internal Server Error']], 500);
         }
     }
 }
