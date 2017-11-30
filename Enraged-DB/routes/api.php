@@ -17,5 +17,8 @@ use Illuminate\Http\Request;
 
 Route::post('/user', 'UserController@register');
 Route::get('/user/{id}', 'UserController@getProfile');
+
 Route::post('/twitter', 'TwitterController@postTwitterProfile');
+Route::put('/twitter/add_follower', 'TwitterController@addTwitterFollower');
+Route::get('/twitter/has/{twitterId}', 'TwitterController@hasTwitterProfile');
 Route::get('/twitter/{twitterId}', 'TwitterController@getTwitterProfile');
