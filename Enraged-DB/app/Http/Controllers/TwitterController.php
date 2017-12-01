@@ -20,13 +20,17 @@ class TwitterController extends Controller
         $twitter->load('follows');
 
         $data = [
-            'user' => $twitter->pol_var,
-            'follows' => []
+            'user' => $twitter->values,
+            'follows' => [],
         ];
 
         foreach ($twitter->follows as $following) {
-            //
+            if ($following instanceof Twitter) {
+                $data['follows'][] = $following->values;
+            }
         }
+
+        return response()->json($data, 200);
     }
 
     /**
@@ -40,9 +44,25 @@ class TwitterController extends Controller
     /**
      *
      */
+    public function finalizeTwitterProfile($twitterID)
+    {
+        //
+    }
+
+    /**
+     *
+     */
     public function hasTwitterProfile($twitterID)
     {
+        $twitter = Twitter::where('twitterID', $twitterID)->latest()->first();
+        $now = new \DateTime();
+        $diff = $now->getTimestamp() - $twitter->updated_at->getTimestamp();
 
+        if (!$twitter->processing && $diff < config('ew.twitter.lifetime')) {
+            return response()->json($twitter->id, 200);
+        }
+
+        return response()->json(0, 404);
     }
 
     /**

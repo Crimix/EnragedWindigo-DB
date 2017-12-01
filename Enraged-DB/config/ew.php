@@ -1,6 +1,6 @@
 <?php
 return [
     'twitter' => [
-        'lifetime' => 86400,
+        'lifetime' => 604800,
     ],
 ];

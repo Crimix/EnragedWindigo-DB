@@ -12,15 +12,20 @@ class TwitterSeeder extends Seeder
      */
     public function run()
     {
-       DB::table('twitters')->delete();
+        $faker = Faker\Factory::create();
+
+        DB::table('twitters')->delete();
+
         $twitterItem = Twitter::create([
-            'name' => 'test',
-            'twitterID' => 'test2',
-            'pol_var' => 2,
-            'lib_var' => 1,
-            'fpol_var' => 2,
-            'flib_var' => 1,
-            'protect' => false
+            'name'          => 'test',
+            'twitterID'     => 'test2',
+            'analysis_val'  => $faker->randomFloat(7, -10, 10),
+            'mi_val'        => $faker->randomFloat(7, -10, 10),
+            'sentiment_val' => $faker->randomFloat(7, -10, 10),
+            'media_val'     => $faker->randomFloat(7, -10, 10),
+            'tweet_count'   => $faker->numberBetween(10, 500),
+            'protect'       => false,
+            'processing'    => false,
         ]);
         $twitterItem->save();
     }

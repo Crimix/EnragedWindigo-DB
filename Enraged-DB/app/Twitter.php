@@ -12,7 +12,9 @@ class Twitter extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'twitterID', 'pol_var', 'protect',
+        'name', 'twitterID', 'analysis_val',
+        'mi_val', 'sentiment_val', 'media_val',
+        'tweet_count', 'protect',
     ];
 
     /**
@@ -30,5 +32,16 @@ class Twitter extends Model
     public function follows()
     {
         return $this->belongsToMany('App\Twitter', 'twitter_twitter', 'twitter_id', 'follows_id', 'id', 'id');
+    }
+
+    public function getValuesAttribute()
+    {
+        return [
+            'analysis'      => $this->analysis_val,
+            'media'         => $this->media_val,
+            'mi'            => $this->mi_val,
+            'sentiment'     => $this->sentiment_val,
+            'tweet_count'   => $this->tweet_count,
+        ];
     }
 }
