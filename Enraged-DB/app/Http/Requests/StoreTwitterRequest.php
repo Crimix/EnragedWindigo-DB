@@ -7,15 +7,14 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreTwitterRequest extends FormRequest
 {
     protected $rules = [
-        'name'          => 'required|string|max:50',
-        'twitterID'     => 'required|alpha_dash|max:30',
+        'twitter_name'  => 'required|alpha_dash|max:30',
+        'twitter_id'    => 'required|integer|min:1',
         'analysis_val'  => 'required|numeric',
         'mi_val'        => 'required|numeric',
         'sentiment_val' => 'required|numeric',
         'media_val'     => 'required|numeric',
-        'tweet_count'   => 'required|integer',
+        'tweet_count'   => 'required|integer|min:1',
         'protect'       => 'required|boolean',
-        'processing'    => 'required|boolean',
     ];
 
     /**

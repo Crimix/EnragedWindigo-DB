@@ -1,0 +1,326 @@
+openapi: 3.0.0
+info:
+  description: |
+    Enraged Windigo DB API
+  version: "v1.0.0"
+  title: EnragedWindigo DB
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Blazingskies/EnragedWindigo-DB/v1.0.0
+  - description: Enraged Windigo DB API
+    url: http://localhost:8001/api
+security:
+  - EnragedWindigoAuth:
+    - read
+    - write
+tags:
+  - name: twitters
+    description: Twitter accounts
+paths:
+  /twitter:
+    post:
+      tags:
+        - twitters
+      summary: Create a new entry
+      operationId: storeTwitterProfile
+      responses:
+        '201':
+          description: The ID of the created record
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 42
+        '500':
+          description: Unable to create profile
+      requestBody:
+        description: Store request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwitterStoreRequest'
+  /twitter/add_follower:
+    put:
+      tags:
+        - twitters
+      summary: Add a follower to an existing entry
+      operationId: addTwitterFollower
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: One or both of the accounts not found
+      requestBody:
+        description: Follow request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwitterFollowRequest'
+  /twitter/finalize:
+    put:
+      tags:
+        - twitters
+      summary: Mark an entry as finalized and ready to be displayed
+      operationId: finalizeTwitterProfile
+      responses:
+        '200':
+          description: Successful operation
+        '404':
+          description: Profile ID not found
+      requestBody:
+        description: Finalize request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwitterFinalizeRequest'
+  '/twitter/has/{twitterName}':
+    get:
+      tags:
+        - twitters
+      summary: Check if there's a recently processed record of the user
+      operationId: hasTwitterUser
+      parameters:
+        - name: twitterName
+          in: path
+          description: A valid Twitter username
+          required: true
+          schema:
+            type: string
+            example: theDonaldDrumpf
+      responses:
+        '200':
+          description: The record ID
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: uint64
+                minimum: 1
+                example: 42
+        '404':
+          description: No recent record found
+  '/twitter/has-id/{twitterId}':
+    get:
+      tags:
+        - twitters
+      summary: Check if there's a recently processed record of the user (by ID)
+      operationId: hasTwitterId
+      parameters:
+        - name: twitterId
+          in: path
+          description: A valid Twitter ID
+          required: true
+          schema:
+            type: integer
+            format: uint64
+            minimum: 1
+            example: 1234567
+      responses:
+        '200':
+          description: The record ID
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: uint64
+                minimum: 1
+                example: 42
+        '404':
+          description: Record not found
+  '/twitter/{recordId}':
+    get:
+      tags:
+        - twitters
+      summary: Retrieve a specific record of the user
+      operationId: getTwitterProfile
+      parameters:
+        - name: recordId
+          in: path
+          description: The internal ID of the record, as returned by /twitter/has/{twitterName}
+          required: true
+          schema:
+            type: integer
+            format: uint64
+            minimum: 1
+            example: 42
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwitterProfile'
+        '404':
+          description: Record not found
+components:
+  schemas:
+    TwitterFinalizeRequest:
+      type: object
+      required:
+        - record_id
+      properties:
+        record_id:
+          type: integer
+          format: uint64
+          description: The record ID of the user that will be finalized
+      example:
+        record_id: 42
+    TwitterFollowRequest:
+      type: object
+      required:
+        - record_id
+        - follows_id
+      properties:
+        record_id:
+          type: integer
+          format: uint64
+          description: The record ID of the user that will be following follows_id
+        follows_id:
+          type: integer
+          format: uint64
+          description: The record ID of the user that will be followed
+      example:
+        record_id: 42
+        follows_id: 666
+    TwitterProfileBasic:
+      type: object
+      properties:
+        record_id:
+          type: integer
+          format: uint64
+          description: Record ID
+        twitter_name:
+          type: string
+          description: Twitter username
+        twitter_id:
+          type: integer
+          format: uint64
+          description: Twitter ID of the user
+        analysis:
+          type: number
+          format: double
+        media:
+          type: number
+          format: double
+        mi:
+          type: number
+          format: double
+        sentiment:
+          type: number
+          format: double
+        tweet_count:
+          type: integer
+          format: uint64
+        updated_at:
+          type: string
+          format: date-time
+      example:
+        record_id: 42
+        twitter_name: theDonaldDrumpf
+        twitter_id: 1234567
+        analysis: 1.453
+        media: 1.992
+        mi: 1.6594
+        sentiment: -1.87
+        tweet_count: 324
+        updated_at: '2017-12-04T12:51:47'
+    TwitterProfile:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/TwitterProfileBasic'
+        follows:
+          type: array
+          items:
+            $ref: '#/components/schemas/TwitterProfileBasic'
+          example:
+            - record_id: 666
+              twitter_name: OverallGoodGuy
+              twitter_id: 6660666
+              analysis: 1.954
+              media: 0.27
+              mi: 1.89
+              sentiment: 0.232
+              tweet_count: 128
+              updated_at: '2017-12-04T12:50:59'
+            - record_id: 12
+              twitter_name: realDonF
+              twitter_id: 91827364
+              analysis: 1.2657
+              media: -0.3
+              mi: 1.5277
+              sentiment: 1.32
+              tweet_count: 278
+              updated_at: '2017-12-04T12:51:04'
+            - record_id: 999
+              twitter_name: DailyKitten
+              twitter_id: 12121212
+              analysis: -1.4
+              media: -1.9
+              mi: -0.989
+              sentiment: -1.44
+              tweet_count: 175
+              updated_at: '2017-12-04T12:51:22'
+    TwitterStoreRequest:
+      type: object
+      required:
+        - twitter_name
+        - twitter_id
+        - analysis_val
+        - mi_val
+        - sentiment_val
+        - media_val
+        - tweet_count
+        - protect
+      properties:
+        twitter_name:
+          type: string
+        twitter_id:
+          type: integer
+          format: uint64
+          minimum: 1
+        analysis_val:
+          type: number
+          format: double
+        mi_val:
+          type: number
+          format: double
+        sentiment_val:
+          type: number
+          format: double
+        media_val:
+          type: number
+          format: double
+        tweet_count:
+          type: integer
+          format: uint64
+        protect:
+          oneOf:
+            - type: boolean
+            - type: integer
+              format: uint32
+              minimum: 0
+              maximum: 1
+      example:
+        twitter_name: theDonaldDrumpf
+        twitter_id: 1234567
+        analysis_val: 1.453
+        media_val: 1.992
+        mi_val: 1.6594
+        sentiment_val: -1.87
+        tweet_count: 324
+        protect: false
+  securitySchemes:
+    EnragedWindigoAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'http://localhost:8001/oauth/authorize'
+          tokenUrl: 'http://localhost:8001/oauth/token'
+          scopes:
+            'read': get twitter profiles
+            'write': create twitter profiles

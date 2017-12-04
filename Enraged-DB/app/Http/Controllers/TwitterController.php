@@ -13,7 +13,7 @@ class TwitterController extends Controller
      */
     public function getTwitterProfile(Twitter $twitter)
     {
-        if (empty($twitter)) {
+        if (empty($twitter) || !$twitter->processed) {
             return response()->json(['errors' => ['Profile not found!']], 404);
         }
 
@@ -36,33 +36,64 @@ class TwitterController extends Controller
     /**
      *
      */
-    public function addTwitterFollower()
+    public function addTwitterFollower(Request $request)
     {
-        //
+        $validatedInput = $request->validate([
+            'record_id' => 'required|integer|exists:twitters,id',
+            'follows_id' => 'required|integer|exists:twitters,id',
+        ]);
+
+        $twitter = Twitter::find($validatedInput['record_id']);
+        $twitter->follows()->attach($validatedInput['follows_id']);
+
+        return response()->json([], 200);
     }
 
     /**
      *
      */
-    public function finalizeTwitterProfile($twitterID)
+    public function finalizeTwitterProfile(Request $request)
     {
-        //
+        $validatedInput = $request->validate([
+            'record_id' => 'required|integer|exists:twitters,id',
+        ]);
+
+        $twitter = Twitter::find($validatedInput['record_id']);
+        $twitter->processed = true;
+
+        if (!$twitter->save()) {
+            return response()->json(['errors' => ['Unable to update user']], 500);
+        }
+
+        return response()->json([], 200);
     }
 
     /**
      *
      */
-    public function hasTwitterProfile($twitterID)
+    public function hasTwitterProfile($twitterName)
     {
-        $twitter = Twitter::where('twitterID', $twitterID)->latest()->first();
-        $now = new \DateTime();
-        $diff = $now->getTimestamp() - $twitter->updated_at->getTimestamp();
+        $twitter = Twitter::where('twitter_name', $twitterName)->latest()->first();
 
-        if (!$twitter->processing && $diff < config('ew.twitter.lifetime')) {
+        if (!empty($twitter) && $twitter->processed && $twitter->age < config('ew.twitter.lifetime')) {
             return response()->json($twitter->id, 200);
         }
 
-        return response()->json(0, 404);
+        return response()->json([], 404);
+    }
+
+    /**
+     *
+     */
+    public function hasTwitterProfileById($twitterId)
+    {
+        $twitter = Twitter::where('twitter_id', $twitterId)->latest()->first();
+
+        if (!empty($twitter) && $twitter->age < config('ew.twitter.lifetime')) {
+            return response()->json($twitter->id, 200);
+        }
+
+        return response()->json([], 404);
     }
 
     /**
@@ -71,14 +102,13 @@ class TwitterController extends Controller
     public function postTwitterProfile(StoreTwitterRequest $request)
     {
         try{
-            $twitter = new Twitter;
+            $twitter = Twitter::make($request->all());
 
-            $twitter->name = $request->name;
-            $twitter->twitterID = $request->twitterID;
-            $twitter->pol_var = $request->pol_var;
-            $twitter->protect =  $request->protect;
+            if (!$twitter->save()) {
+                return response()->json(['errors' => ['Unable to save profile.']], 500);
+            }
 
-            $twitter->save();
+            return response()->json($twitter->id, 201);
         }
         catch(\Exception $e){
             return response()->json(['errors' => ['Internal Server Error']], 500);

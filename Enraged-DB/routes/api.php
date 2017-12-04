@@ -15,11 +15,12 @@ use Illuminate\Http\Request;
 */
 
 
-Route::post('/user', 'UserController@register');
-Route::get('/user/{id}', 'UserController@getProfile');
+//Route::post('/user', 'UserController@register');
+//Route::get('/user/{id}', 'UserController@getProfile');
 
 Route::post('/twitter', 'TwitterController@postTwitterProfile');
 Route::put('/twitter/add_follower', 'TwitterController@addTwitterFollower');
-Route::put('/twitter/finalize/{twitterId}', 'TwitterController@finalizeTwitterProfile');
-Route::get('/twitter/has/{twitterId}', 'TwitterController@hasTwitterProfile');
-Route::get('/twitter/{twitterId}', 'TwitterController@getTwitterProfile');
+Route::put('/twitter/finalize', 'TwitterController@finalizeTwitterProfile');
+Route::get('/twitter/has/{twitterName}', 'TwitterController@hasTwitterProfile');
+Route::get('/twitter/has-id/{twitterId}', 'TwitterController@hasTwitterProfileById');
+Route::get('/twitter/{twitter}', 'TwitterController@getTwitterProfile');
