@@ -104,6 +104,8 @@ class TwitterController extends Controller
         try{
             $twitter = Twitter::make($request->all());
 
+            $twitter->processed = false;
+
             if (!$twitter->save()) {
                 return response()->json(['errors' => ['Unable to save profile.']], 500);
             }
@@ -111,7 +113,7 @@ class TwitterController extends Controller
             return response()->json($twitter->id, 201);
         }
         catch(\Exception $e){
-            return response()->json(['errors' => ['Internal Server Error']], 500);
+            return response()->json(['errors' => ['Internal Server Error', $e->getMessage()]], 500);
         }
     }
 }
