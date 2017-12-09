@@ -4,6 +4,6 @@ return [
         'url' => config('EW_GUI_URL', ''),
     ],
     'twitter' => [
-        'lifetime' => 604800,
+        'lifetime' => intval(config('EW_TWITTER_LIFETIME', 604800)),
     ],
 ];
