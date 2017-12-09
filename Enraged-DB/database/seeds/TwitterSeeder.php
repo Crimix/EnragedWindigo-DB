@@ -29,7 +29,7 @@ class TwitterSeeder extends Seeder
         ]);
         $twitterItem->save();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $follows = Twitter::make([
                 'twitter_name'  => $faker->firstName . $faker->lastName,
                 'twitter_id'    => $faker->numberBetween(1, 1000000),
