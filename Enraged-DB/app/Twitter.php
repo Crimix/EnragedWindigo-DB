@@ -45,7 +45,7 @@ class Twitter extends Model
             'mi'            => $this->mi_val,
             'sentiment'     => $this->sentiment_val,
             'tweet_count'   => $this->tweet_count,
-            'updated_at'    => $this->updated_at,
+            'updated_at'    => $this->updated_at->toIso8601String(),
         ];
     }
 

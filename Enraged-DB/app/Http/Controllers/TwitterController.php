@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Twitter;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreTwitterRequest;
+use Illuminate\Http\Request;
+use GuzzleHttp\Client as GuzzleClient;
 
 class TwitterController extends Controller
 {
@@ -55,7 +56,8 @@ class TwitterController extends Controller
     public function finalizeTwitterProfile(Request $request)
     {
         $validatedInput = $request->validate([
-            'record_id' => 'required|integer|exists:twitters,id',
+            'record_id'  => 'required|integer|exists:twitters,id',
+            'request_id' => 'required|base64|min:10',
         ]);
 
         $twitter = Twitter::find($validatedInput['record_id']);
@@ -64,6 +66,24 @@ class TwitterController extends Controller
         if (!$twitter->save()) {
             return response()->json(['errors' => ['Unable to update user']], 500);
         }
+
+        // NOTE: Replace this with a queued call instead?
+        $guzzle      = new GuzzleClient([
+            'base_uri'    => config('ew.queue.url'),
+            'http_errors' => false,
+        ]);
+        $response    = $guzzle->request(
+            'POST',
+            '/api/twitter/request/processed',
+            [
+                'form_params' => [
+                    'request_id' => $validatedInput['request_id'],
+                ],
+                'headers'     => [
+                    'Accept'        => 'application/json',
+                ],
+            ]
+        );
 
         return response()->json([], 200);
     }
