@@ -69,7 +69,7 @@ class TwitterController extends Controller
 
         // NOTE: Replace this with a queued call instead?
         $guzzle      = new GuzzleClient([
-            'base_uri'    => config('ew.queue.url'),
+            'base_uri'    => config('ew.gui.url'),
             'http_errors' => false,
         ]);
         $response    = $guzzle->request(
