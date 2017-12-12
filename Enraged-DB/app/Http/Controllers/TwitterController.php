@@ -73,7 +73,7 @@ class TwitterController extends Controller
             'http_errors' => false,
         ]);
         $response    = $guzzle->request(
-            'POST',
+            'PUT',
             '/api/twitter/request/processed',
             [
                 'form_params' => [
